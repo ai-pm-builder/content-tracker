@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Pulse | Influencer Content & Brand Collab Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-clapperboard"></i>
+                </div>
+                <div class="logo-text">
+                    <h2>CreatorPulse</h2>
+                    <span>Influencer Suite</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="content">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Content Stage</span>
+                </button>
+                <button class="nav-item" data-tab="collabs">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>Brand Collabs</span>
+                </button>
+                <button class="nav-item" data-tab="sync">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Notion & Sheets</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btn-quick-add" class="btn-primary full-width">
+                    <i class="fa-solid fa-plus"></i> Quick Create
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Mobile / Header Bar -->
+            <header class="top-header">
+                <div class="mobile-logo">
+                    <i class="fa-solid fa-clapperboard"></i>
+                    <h1>CreatorPulse</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="currency-badge">
+                        <span class="flag">🇮🇳</span> ₹ INR
+                    </div>
+                    <button class="btn-icon" id="btn-header-add" title="Add New Item">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button class="btn-icon" id="btn-sync-status" title="Sync Status">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-page active">
+                <div class="page-title-section">
+                    <div>
+                        <h2>Overview & Pulse</h2>
+                        <p class="subtitle">Track your content pipeline and incoming brand revenues at a glance.</p>
+                    </div>
+                    <div class="quick-stats-period">
+                        <span class="badge">Live Tracker</span>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card glass">
+                        <div class="kpi-icon pending">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-label">Pending Payments</span>
+                            <h3 id="stat-pending-payments">₹0</h3>
+                            <span class="kpi-subtext" id="stat-pending-count">0 pending invoices</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card glass">
+                        <div class="kpi-icon success">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-label">Earned (This Month)</span>
+                            <h3 id="stat-paid-amount">₹0</h3>
+                            <span class="kpi-subtext" id="stat-paid-count">0 completed collabs</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card glass">
+                        <div class="kpi-icon content">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-label">In Production</span>
+                            <h3 id="stat-in-prod-count">0</h3>
+                            <span class="kpi-subtext">Ideas, Shot or Edited</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card glass">
+                        <div class="kpi-icon reach">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-label">Total Posted Reach</span>
+                            <h3 id="stat-total-reach">0</h3>
+                            <span class="kpi-subtext">Across Instagram, YT & TikTok</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Split Views -->
+                <div class="dashboard-columns">
+                    <!-- Recent Collab Opportunities -->
+                    <div class="dash-widget glass">
+                        <div class="widget-header">
+                            <h3><i class="fa-brands fa-instagram text-pink"></i> Active IG DM Collabs</h3>
+                            <button class="btn-text" onclick="switchTab('collabs')">View All <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div id="dash-collabs-list" class="widget-content list-view">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Content Pipeline Preview -->
+                    <div class="dash-widget glass">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-layer-group text-purple"></i> Content Stage Summary</h3>
+                            <button class="btn-text" onclick="switchTab('content')">Open Board <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div id="dash-content-summary" class="widget-content">
+                            <!-- Dynamic Stage Progress Bars -->
+                            <div class="stage-progress-container">
+                                <div class="stage-progress-item">
+                                    <div class="stage-label">
+                                        <span>💡 Ideas</span>
+                                        <strong id="count-stage-idea">0</strong>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill stage-idea" id="bar-stage-idea"></div></div>
+                                </div>
+                                <div class="stage-progress-item">
+                                    <div class="stage-label">
+                                        <span>📹 Shot</span>
+                                        <strong id="count-stage-shot">0</strong>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill stage-shot" id="bar-stage-shot"></div></div>
+                                </div>
+                                <div class="stage-progress-item">
+                                    <div class="stage-label">
+                                        <span>✂️ Edited</span>
+                                        <strong id="count-stage-edited">0</strong>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill stage-edited" id="bar-stage-edited"></div></div>
+                                </div>
+                                <div class="stage-progress-item">
+                                    <div class="stage-label">
+                                        <span>🚀 Posted</span>
+                                        <strong id="count-stage-posted">0</strong>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill stage-posted" id="bar-stage-posted"></div></div>
+                                </div>
+                            </div>
+
+                            <div class="recent-posted-box">
+                                <h4>Recent Top Posts</h4>
+                                <div id="dash-recent-posts" class="mini-post-list">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: CONTENT STAGE TRACKER -->
+            <section id="tab-content" class="tab-page">
+                <div class="page-title-section">
+                    <div>
+                        <h2>Content Stage Pipeline</h2>
+                        <p class="subtitle">Organize content from initial idea to shooting, editing, and posting.</p>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="view-toggle">
+                            <button id="view-board-btn" class="toggle-btn active"><i class="fa-solid fa-kanban"></i> Board</button>
+                            <button id="view-table-btn" class="toggle-btn"><i class="fa-solid fa-table-list"></i> Table</button>
+                        </div>
+                        <button class="btn-primary" id="btn-add-content">
+                            <i class="fa-solid fa-plus"></i> New Idea
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters & Search Bar -->
+                <div class="filter-bar glass">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="content-search" placeholder="Search ideas, topics, links...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="content-platform-filter">
+                            <option value="all">All Platforms</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="YouTube">YouTube</option>
+                            <option value="TikTok">TikTok</option>
+                        </select>
+                        <select id="content-stage-filter">
+                            <option value="all">All Stages</option>
+                            <option value="Idea">Idea</option>
+                            <option value="Shot">Shot</option>
+                            <option value="Edited">Edited</option>
+                            <option value="Posted">Posted</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Board View (Kanban) -->
+                <div id="content-board-view" class="kanban-board">
+                    <!-- Column 1: Ideas -->
+                    <div class="kanban-column" data-stage="Idea">
+                        <div class="column-header stage-header-idea">
+                            <span class="column-title"><i class="fa-regular fa-lightbulb"></i> Ideas</span>
+                            <span class="badge" id="col-count-idea">0</span>
+                        </div>
+                        <div class="kanban-cards" id="cards-container-idea">
+                            <!-- Cards inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Shot -->
+                    <div class="kanban-column" data-stage="Shot">
+                        <div class="column-header stage-header-shot">
+                            <span class="column-title"><i class="fa-solid fa-video"></i> Shot</span>
+                            <span class="badge" id="col-count-shot">0</span>
+                        </div>
+                        <div class="kanban-cards" id="cards-container-shot">
+                            <!-- Cards inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Edited -->
+                    <div class="kanban-column" data-stage="Edited">
+                        <div class="column-header stage-header-edited">
+                            <span class="column-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Edited</span>
+                            <span class="badge" id="col-count-edited">0</span>
+                        </div>
+                        <div class="kanban-cards" id="cards-container-edited">
+                            <!-- Cards inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Column 4: Posted -->
+                    <div class="kanban-column" data-stage="Posted">
+                        <div class="column-header stage-header-posted">
+                            <span class="column-title"><i class="fa-solid fa-share-nodes"></i> Posted</span>
+                            <span class="badge" id="col-count-posted">0</span>
+                        </div>
+                        <div class="kanban-cards" id="cards-container-posted">
+                            <!-- Cards inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table View (Hidden by default) -->
+                <div id="content-table-view" class="table-container glass hide">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Content Title</th>
+                                <th>Platform</th>
+                                <th>Stage</th>
+                                <th>Reach / Views</th>
+                                <th>Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="content-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 3: BRAND COLLABS TRACKER -->
+            <section id="tab-collabs" class="tab-page">
+                <div class="page-title-section">
+                    <div>
+                        <h2>Brand Collabs Tracker (IG DMs & Rates)</h2>
+                        <p class="subtitle">Manage Instagram DM leads, quotes in ₹ INR, deliverable status, and payment tracking.</p>
+                    </div>
+                    <button class="btn-primary" id="btn-add-collab">
+                        <i class="fa-solid fa-handshake"></i> Add New Collab
+                    </button>
+                </div>
+
+                <!-- Financial Summary Bar -->
+                <div class="collab-summary-bar glass">
+                    <div class="summary-pill">
+                        <span class="pill-label">Total Quoted Pipeline</span>
+                        <span class="pill-value" id="collab-total-pipeline">₹0</span>
+                    </div>
+                    <div class="summary-pill warning">
+                        <span class="pill-label">Pending Invoices</span>
+                        <span class="pill-value text-amber" id="collab-total-pending">₹0</span>
+                    </div>
+                    <div class="summary-pill success">
+                        <span class="pill-label">Payment Received</span>
+                        <span class="pill-value text-green" id="collab-total-received">₹0</span>
+                    </div>
+                </div>
+
+                <!-- Collabs Filter -->
+                <div class="filter-bar glass">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="collab-search" placeholder="Search brand name, IG handle, notes...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="collab-stage-filter">
+                            <option value="all">All Conversation Stages</option>
+                            <option value="DM Inquiry">IG DM Inquiry</option>
+                            <option value="Quote Given">Quote Given</option>
+                            <option value="Deal Agreed">Deal Agreed</option>
+                            <option value="Content Shot">Content Shot</option>
+                            <option value="Invoiced">Invoiced</option>
+                            <option value="Paid">Payment Received</option>
+                        </select>
+                        <select id="collab-payment-filter">
+                            <option value="all">All Payment Status</option>
+                            <option value="Unpaid">Unpaid / Pending</option>
+                            <option value="Invoiced">Invoiced</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Collabs List / Cards Grid -->
+                <div id="collabs-grid" class="collabs-grid">
+                    <!-- Cards populated dynamically -->
+                </div>
+            </section>
+
+            <!-- TAB 4: NOTION & GOOGLE SHEETS SYNC -->
+            <section id="tab-sync" class="tab-page">
+                <div class="page-title-section">
+                    <div>
+                        <h2>Google Sheets & Notion Integration</h2>
+                        <p class="subtitle">Save your content and collab data to Google Sheets or Notion database.</p>
+                    </div>
+                </div>
+
+                <div class="sync-grid">
+                    <!-- Google Sheets Integration Box -->
+                    <div class="sync-card glass">
+                        <div class="sync-card-header">
+                            <div class="sync-icon sheets">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <h3>Google Sheets Sync</h3>
+                                <p>Sync live data or export to Google Sheets format (.CSV)</p>
+                            </div>
+                        </div>
+                        <div class="sync-card-body">
+                            <div class="form-group">
+                                <label for="sheets-script-url">Google Apps Script Webhook URL (Optional Live Sync)</label>
+                                <input type="text" id="sheets-script-url" placeholder="https://script.google.com/macros/s/.../exec">
+                                <small class="help-text">Enter your Google Apps Script Web App URL to push updates automatically.</small>
+                            </div>
+                            <div class="button-row">
+                                <button class="btn-secondary" id="btn-export-sheets-csv">
+                                    <i class="fa-solid fa-download"></i> Download CSV for Google Sheets
+                                </button>
+                                <button class="btn-primary" id="btn-save-sheets-config">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notion Integration Box -->
+                    <div class="sync-card glass">
+                        <div class="sync-card-header">
+                            <div class="sync-icon notion">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <div>
+                                <h3>Notion Table Sync</h3>
+                                <p>Export structured tables ready for Notion Database import.</p>
+                            </div>
+                        </div>
+                        <div class="sync-card-body">
+                            <p class="info-desc">Generate Notion-ready CSV files containing your Content Stages and Brand Collabs DM leads with exact column mapping.</p>
+                            <div class="button-row">
+                                <button class="btn-secondary" id="btn-export-notion-content">
+                                    <i class="fa-solid fa-file-export"></i> Export Content Stage for Notion
+                                </button>
+                                <button class="btn-secondary" id="btn-export-notion-collabs">
+                                    <i class="fa-solid fa-file-export"></i> Export Collabs for Notion
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Backup & Data Management -->
+                    <div class="sync-card glass full-span">
+                        <div class="sync-card-header">
+                            <div class="sync-icon backup">
+                                <i class="fa-solid fa-hard-drive"></i>
+                            </div>
+                            <div>
+                                <h3>Local Backup & Preset Data</h3>
+                                <p>Export full JSON backups or load initial creator sample data.</p>
+                            </div>
+                        </div>
+                        <div class="sync-card-body horizontal-body">
+                            <button class="btn-secondary" id="btn-export-json">
+                                <i class="fa-solid fa-code"></i> Export Full JSON Backup
+                            </button>
+                            <button class="btn-secondary" id="btn-import-json">
+                                <i class="fa-solid fa-upload"></i> Import JSON File
+                            </button>
+                            <input type="file" id="json-file-input" accept=".json" style="display: none;">
+                            <button class="btn-danger-outline" id="btn-load-demo-data">
+                                <i class="fa-solid fa-rotate-left"></i> Reload Preset Sample Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Mobile Bottom Navigation Bar -->
+        <nav class="mobile-bottom-nav">
+            <button class="mobile-nav-item active" data-tab="dashboard">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </button>
+            <button class="mobile-nav-item" data-tab="content">
+                <i class="fa-solid fa-video"></i>
+                <span>Content</span>
+            </button>
+            <button class="mobile-nav-item" data-tab="collabs">
+                <i class="fa-solid fa-handshake"></i>
+                <span>Collabs</span>
+            </button>
+            <button class="mobile-nav-item" data-tab="sync">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Sheets</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MODAL 1: ADD/EDIT CONTENT ITEM -->
+    <div id="modal-content" class="modal-overlay">
+        <div class="modal-container glass">
+            <div class="modal-header">
+                <h3 id="modal-content-title">Add Content Idea</h3>
+                <button class="btn-icon modal-close" onclick="closeModal('modal-content')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-content">
+                <input type="hidden" id="content-id">
+                
+                <div class="form-group">
+                    <label for="content-title-input">Content Title / Idea <span class="req">*</span></label>
+                    <input type="text" id="content-title-input" required placeholder="e.g. Top 5 AI Tools I use daily for Editing">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="content-platform-input">Platform</label>
+                        <select id="content-platform-input">
+                            <option value="Instagram">Instagram</option>
+                            <option value="YouTube">YouTube</option>
+                            <option value="TikTok">TikTok</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="content-stage-input">Stage</label>
+                        <select id="content-stage-input">
+                            <option value="Idea">💡 Idea</option>
+                            <option value="Shot">📹 Shot</option>
+                            <option value="Edited">✂️ Edited</option>
+                            <option value="Posted">🚀 Posted</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="content-reach-input">Reach / Views Count</label>
+                        <input type="number" id="content-reach-input" placeholder="e.g. 45000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="content-link-input">Post URL / Reel Link</label>
+                        <input type="url" id="content-link-input" placeholder="https://instagram.com/reel/...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content-notes-input">Scripting & Concept Notes</label>
+                    <textarea id="content-notes-input" rows="3" placeholder="Hooks, caption hashtags, audio track idea..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('modal-content')">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Content Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD/EDIT BRAND COLLAB -->
+    <div id="modal-collab" class="modal-overlay">
+        <div class="modal-container glass">
+            <div class="modal-header">
+                <h3 id="modal-collab-title">Add Brand Collaboration</h3>
+                <button class="btn-icon modal-close" onclick="closeModal('modal-collab')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-collab">
+                <input type="hidden" id="collab-id">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-brand-input">Brand / Client Name <span class="req">*</span></label>
+                        <input type="text" id="collab-brand-input" required placeholder="e.g. Minimalist Skincare">
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-handle-input">Instagram Handle / DM</label>
+                        <input type="text" id="collab-handle-input" placeholder="@brand_official">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-stage-input">Conversation Stage</label>
+                        <select id="collab-stage-input">
+                            <option value="DM Inquiry">💬 IG DM Inquiry</option>
+                            <option value="Quote Given">💰 Quote Given</option>
+                            <option value="Deal Agreed">🤝 Deal Agreed</option>
+                            <option value="Content Shot">📹 Content Shot</option>
+                            <option value="Invoiced">📄 Invoiced</option>
+                            <option value="Paid">✅ Payment Received</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-rate-input">Quoted Rate (₹ INR) <span class="req">*</span></label>
+                        <input type="number" id="collab-rate-input" required placeholder="e.g. 25000" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="collab-deliverables-input">Deliverables Requested</label>
+                    <input type="text" id="collab-deliverables-input" placeholder="e.g. 1 IG Reel + 2 Stories + 30 days usage rights">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-payment-status-input">Payment Status</label>
+                        <select id="collab-payment-status-input">
+                            <option value="Unpaid">Unpaid / Pending</option>
+                            <option value="Invoiced">Invoice Sent</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-due-date-input">Expected Payment Date</label>
+                        <input type="date" id="collab-due-date-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="collab-notes-input">IG DM Conversation Log & Notes</label>
+                    <textarea id="collab-notes-input" rows="3" placeholder="Key points from IG DMs, deliverable deadline, contact email..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('modal-collab')">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Brand Collab</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script Files -->
+    <script src="sync.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
